@@ -1,9 +1,10 @@
 
 A chat application by using a node, socket, mongoatlas and react
 
+<img width="1074" height="541" alt="image" src="https://github.com/user-attachments/assets/25ce7807-15e1-46c3-a260-b7a007d1bf32" />
 
-![Screenshot (86)](https://github.com/user-attachments/assets/980503d3-81b7-417f-8e82-8787bc592dce)
+<img width="1075" height="539" alt="image" src="https://github.com/user-attachments/assets/264d7a2f-eaf7-4d7d-a1d0-a5dafb1a78a4" />
 
-![Screenshot (83)](https://github.com/user-attachments/assets/63a1ea8c-7d9a-4b23-ab5d-aef5ccbd3a52)
+<img width="1078" height="541" alt="image" src="https://github.com/user-attachments/assets/805f3e7f-1a03-4adb-a556-0597bd4128cc" />
 
-![Screenshot (85)](https://github.com/user-attachments/assets/2d74bc13-c312-418a-9119-109dbe63a7aa)
+
