@@ -20,7 +20,7 @@ const Login = () => {
     bg-opacity-0">
                 <h1 className='text-3xl font-semibold text-center text-gray-300'>
                     Login
-                    <span className="text-white-500"> ChatApp</span>
+                    <span className="text-white-500">MessagesMesh</span>
                 </h1>
 
                 <form onSubmit={handleSubmit}>

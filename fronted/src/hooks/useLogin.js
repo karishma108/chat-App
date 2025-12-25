@@ -11,15 +11,16 @@ const useLogin = () => {
    if(!success) return;
         setLoading(true);
         try {
-            const res = await fetch("/api/auth/login" , {
+                const res = await fetch("/api/auth/login" , {
                 method: "POST",
                     headers: { "content-Type": "application/json" },
+                          credentials: "include",
                     body: JSON.stringify({ username, password})
                  });
             
                  const data = await res.json();
-                 if(data.error){
-                    throw new Error(data.error)
+                      if(!res.ok){
+                          throw new Error(data.error || "Unable to login")
                  }
 
                  localStorage.setItem("chat-user", JSON.stringify(data));

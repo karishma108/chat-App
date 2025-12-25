@@ -14,15 +14,16 @@ const signup = async({fullName, username, password, confirmPassword, gender}) =>
 
    setLoading(true);
    try {
-     const res = await fetch("/api/auth/signup", {
+      const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "content-Type": "application/json" },
+          credentials: "include",
         body: JSON.stringify({fullName, username, password, confirmPassword, gender})
      });
 
      const data = await res.json();
-     if(data.error){
-        throw new Error(data.error)
+      if(!res.ok){
+          throw new Error(data.error || "Unable to sign up")
      }
      //localstro
      localStorage.setItem("chat-user", JSON.stringify(data));

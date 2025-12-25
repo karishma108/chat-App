@@ -9,13 +9,14 @@ const userLogout = () => {
   const logout = async () => { 
     setLoading(true);
     try {
-   const res = await fetch("/api/auth/logout",{
-    method: "POST",
-    headers: {"Context-Type": "application/json"}
-   });
+  const res = await fetch("/api/auth/logout",{
+   method: "POST",
+   headers: {"Content-Type": "application/json"},
+   credentials: "include",
+  });
    const data = await res.json()
-   if(data.error){
-    throw new Error(data.error)
+  if(!res.ok){
+   throw new Error(data.error || "Unable to logout")
    }
 
    localStorage.removeItem("chat-user")

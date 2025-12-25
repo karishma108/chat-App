@@ -12,32 +12,57 @@ import { app, server } from "./socket/socket.js";
 
 
 
-
 dotenv.config();
-
-// const __dirname = path.resolve();
 
 const PORT = process.env.PORT || 5000;
 
 const __dirname = path.resolve();
 
-app.use(express.json()); // to parse the incoming request with JSON payleads (from req.body)
+app.use(express.json()); // to parse the incoming request with JSON payloads (from req.body)
 app.use(cookieParser());
 
-app.use("/api/auth" , authRoutes);
-app.use("/api/messages" , messageRoutes);
-app.use("/api/users" , userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/users", userRoutes);
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(express.static(path.join(__dirname, "/fronted/dist")));
 
 app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "fronted", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "fronted", "dist", "index.html"));
+});
+
+server.listen(PORT, async () => {
+    await connectToMongodb();
+    console.log(`Server running on port ${PORT}`);
 });
 
 
-server.listen(PORT, () => {
-    connectToMongodb();
-    console.log(`server running on the port ${PORT}`)
-});
+// dotenv.config();
 
+
+
+// const __dirname = path.resolve();
+
+// const PORT = process.env.PORT || 5000;
+
+// app.use(express.json()); // to parse the incoming request with JSON payleads (from req.body)
+// app.use(cookieParser());
+
+// app.use("/api/auth" , authRoutes);
+// app.use("/api/messages" , messageRoutes);
+// app.use("/api/users" , userRoutes);
+
+
+// app.use(express.static(path.join(__dirname, "/fronted/dist")));
+
+// app.get("*", (req, res) => {
+// 	res.sendFile(path.join(__dirname, "fronted", "dist", "index.html"));
+// });
+
+
+// server.listen(PORT, () => {
+//     connectToMongodb();
+//     console.log(`server running on the port ${PORT}`)
+// });

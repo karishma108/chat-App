@@ -13,8 +13,17 @@ const messageSchema = new mongoose.Schema({
    },
   message: {
     type: String,
-    required: true,
+    trim: true,
   },
+  messageType: {
+    type: String,
+    enum: ["text", "image", "file"],
+    default: "text",
+  },
+  fileUrl: String,
+  fileName: String,
+  fileSize: Number,
+  fileMimeType: String,
   // created and updated
 }, {timestamps: true});
 

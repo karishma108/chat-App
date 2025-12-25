@@ -1,6 +1,7 @@
 
- import { useSocketContext } from "../../context/socketContext";
+import { useSocketContext } from "../../context/socketContext";
 import useConversation from "../../zustand/useConversation";
+import { resolveAssetUrl } from "../../utils/resolveAssetUrl";
 
  const Conversation = ({conversation, lastIdx, emoji}) => {
     const {selectedConversation, setSelectedConversation} = useConversation();
@@ -17,7 +18,7 @@ import useConversation from "../../zustand/useConversation";
     >
     <div className={`avatar ${isOnline ? "online" : ""} `}>
         <div className='w-12 rounded-full'>
-            <img src={conversation.profilePic} alt="user avatar" />
+            <img src={resolveAssetUrl(conversation.profilePic)} alt="user avatar" />
         </div>
     </div>
 

@@ -1,44 +1,51 @@
-import {createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { userAuthContext } from "./AuthContext";
-import  io  from "socket.io-client";
+import io from "socket.io-client";
 
 const SocketContext = createContext();
  
- export const useSocketContext = () => {
+export const useSocketContext = () => {
     return useContext(SocketContext);
-    
- };
-export const SocketContextProvider = ({ children}) => {
+};
+
+export const SocketContextProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
-    const {authUser} = userAuthContext();
+    const { authUser } = userAuthContext();
 
     useEffect(() => {
-       
         if(authUser) {
-             
-           const socket = io("http://localhost:5000" , {
-                 query: {
+            const activeSocket = io("http://localhost:5000", {
+                query: {
                     userId: authUser._id,
-                 },
+                },
+                withCredentials: true,
             });
 
-            setSocket(socket);
+            setSocket(activeSocket);
 
-            socket.on("getOnlineUsers", (users) => {
+            activeSocket.on("getOnlineUsers", (users) => {
                 setOnlineUsers(users);
+                console.log("Online users:", users);
             });
 
-            return () => socket.close();
+            return () => {
+                activeSocket.off("getOnlineUsers");
+                activeSocket.close();
+            };
         } else {
             if(socket) {
                 socket.close();
                 setSocket(null);
             }
         }
-    },[authUser]);
+    }, [authUser]);
 
-    return <SocketContext.Provider value={{socket, onlineUsers}}>{children}</SocketContext.Provider>;
+    return (
+        <SocketContext.Provider value={{ socket, onlineUsers }}>
+            {children}
+        </SocketContext.Provider>
+    );
 };
 
 

@@ -1,6 +1,7 @@
 import { userAuthContext } from "../../context/AuthContext";
 import { extractTime } from "../../utils/extractTime";
 import useConversation from "../../zustand/useConversation";
+import { resolveAssetUrl } from "../../utils/resolveAssetUrl";
 
 
 const Message = ({message}) => {
@@ -10,8 +11,14 @@ const Message = ({message}) => {
   const fromattedTime = extractTime(message.createdAt);
   const chatClassName = fromMe ? 'chat-end' : 'chat-start';
   const profilePic = fromMe ? authUser.profilePic: selectedConversation?.profilePic;
-  const bubbleBgColor = fromMe ? 'bg-orange-500' : "bg-black-900";
+  const bubbleBgColor = fromMe ? 'bg-orange-500' : "";
   const shakeClass = message.shouldShake ? "shake" : "";
+  const hasText = Boolean(message.message);
+  const isImage = message.messageType === "image";
+  const hasFile = Boolean(message.fileUrl);
+  const fileLabel = message.fileName || "Download file";
+  const resolvedProfilePic = resolveAssetUrl(profilePic);
+  const resolvedFileUrl = resolveAssetUrl(message.fileUrl);
 
   return (
     <div className={`chat ${chatClassName} `}>
@@ -19,11 +26,32 @@ const Message = ({message}) => {
         <div className='  w-10 rounded-full'>
             <img 
             alt='Tailwind CSS chat bubble components'
-            src={profilePic}
+            src={resolvedProfilePic}
             />
         </div>
     </div>
-    <div className={`chat-bubble text-white  ${bubbleBgColor} ${shakeClass} pd-2`}>{message.message}</div>
+    <div className={`chat-bubble text-white ${bubbleBgColor} ${shakeClass} pd-2 flex flex-col gap-2 max-w-xs sm:max-w-sm break-words`}>
+      {hasText && <span>{message.message}</span>}
+      {hasFile && (
+        isImage ? (
+          <img
+            src={resolvedFileUrl}
+            alt={fileLabel}
+            className='rounded-md max-h-60 object-cover'
+            loading='lazy'
+          />
+        ) : (
+          <a
+            href={resolvedFileUrl}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='underline underline-offset-4 text-white hover:text-orange-200'
+          >
+            {fileLabel}
+          </a>
+        )
+      )}
+    </div>
     <div className={'chat-footer text-white opacity-50 text-xs flex gap-1 items-center'}>{fromattedTime}</div>
     </div>
   );
